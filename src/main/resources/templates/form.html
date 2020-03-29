@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+
+<body>
+	<nav th:replace="layout :: header"></nav>
+
+	<div class="container" id="main-content">
+		<div class="row d-flex justify-content-center">
+			<form style="min-width: 300px;"
+				  novalidate="novalidate">
+				<h5 class="text-center">User Form</h5>
+
+<!--				<input type="hidden" th:field="*{id}" />-->
+
+				<div class="form-group">
+					<input class="form-control" id="name" type="text" placeholder="Your Name"
+						  name="name"/>
+
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" id="email" type="email" placeholder="Your Email"
+						   name="email"  />
+
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" id="phone" type="text" placeholder="Your Phone Number"
+						  name="phone"/>
+
+
+				</div>
+				<div class="form-group">
+					<input class="form-control" id="password" type="password" placeholder="Password"
+						   name="password" />
+
+				</div>
+
+				<div class="form-group">
+					<button type="submit" id="btn-add-new" class="btn btn-block btn-primary">
+						<i class="fa fa-save" ></i> Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div><!-- /.container -->
+
+	<footer th:replace="layout :: footer"></footer>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			hello();
+        });
+        function hello() {
+			console.log("Hello World");
+		};
+		$('#btn-add-new').click(function() {
+			event.preventDefault()
+			name = $('#name').val()
+			phone = $('#phone').val()
+			email = $('#email').val()
+			password = $('#password').val()
+
+			// TODO: Validate thông tin ở đây
+			 if ($.trim(name) == ''){
+                  alert('Bạn chưa nhập tên ');
+       			}
+       		 else if ($.trim(phone) == ''){
+                  alert('Bạn chưa nhập phone');
+       			}
+       		 else if ($.trim(email) == ''){
+                  alert('Bạn chưa nhập email');
+       			}
+       		else if ($.trim(password) == ''){
+                  alert('Bạn chưa nhập password');
+       			}
+       		else if(!check()){
+
+       		}
+			else{
+			req = {
+				name: name,
+				email: email,
+				phone: phone,
+				password: password
+			}
+			console.log(req)
+			var myJSON = JSON.stringify(req);
+			console.log(myJSON)
+			$.ajax({
+			   	url: 'http://localhost:8080/user/create',
+			   	type: 'POST',
+			   	data: myJSON,
+			   	dataType: "json",
+			   	contentType: "application/json; charset=utf-8",
+			   	error: function(data) {
+			   		alert(data.responseJSON.message)
+			   	},
+			   	success: function(data) {
+			   		alert("Tạo mới thành công")
+					window.location.assign('http://localhost:8080/admin');
+			   	}
+			});
+			}
+		})
+
+	function check(){
+        var email = document.getElementById('email');
+        var phone = document.getElementById('phone');
+         var filter1 = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+         var filter2 = /((09|01[2|6|8|9])+([0-9]{8})\b)/g;
+          if (!filter1.test(email.value)) {
+             email.focus;
+             alert('Hãy nhập email hợp lệ.\nExample@gmail.com');
+             return false;
+    }
+    	 if(!filter2.test(phone.value)){
+    		phone.focus;
+    		 alert('Hãy nhập số điện thoại hợp lệ');
+    		return false;
+    }
+    else{
+             return true;
+    }
+
+}
+
+	</script>
+
+</body>
+</html>

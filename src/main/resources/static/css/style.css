@@ -1,0 +1,45 @@
+body {
+	background-color: #FAFAFA;
+}
+
+#main-content {
+	min-height: 500px;
+	margin-top: 50px;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.table th, td {
+   text-align: center;   
+}
+
+.field-error {
+	border-color: #FF0000;
+	margin-bottom: 10px;	
+}
+#menu {
+    float: left;
+    width: 10%;
+    height: 570px;
+    background: #eee;
+    padding: 20px;
+}
+
+#menu1{
+	height: 100px;
+	border-style: none;
+}
+#menu2{
+	height: 100px;
+	border-style: none;
+}
+#menu3{
+	height: 100px;
+	border-style: none;
+}
+#menu4{
+	height: 0px;
+	border-style: none;
+}

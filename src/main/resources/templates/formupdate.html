@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+
+<body>
+	<nav th:replace="layout :: header"></nav>
+
+	<div class="container" id="main-content">
+		<div class="row d-flex justify-content-center">
+			<form style="min-width: 300px;" novalidate="novalidate"  >
+				<h5 class="text-center">Update form</h5>
+
+<!--				<input type="hidden" id="id" th:field="*{id}" />-->
+
+				<div class="form-group">
+					<input class="form-control" id="name" type="text" th:value="${user.name}" placeholder="Your Name"
+						   name="name"  />
+
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" id="password" type="password"  placeholder="Your Password"
+						name="password"   />
+
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" id="phone" type="text"th:value="${user.phone}" placeholder="Your Phone"
+						 name="phone"   />
+				</div>
+
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-block btn-primary" th:onclick="'updateUser('+${user.id}+')'">
+						<i class="fa fa-save"></i> Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div><!-- /.container -->
+
+	<footer th:replace="layout :: footer"></footer>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			hello();
+        });
+        function hello() {
+			console.log("Hello World");
+		};
+		function updateUser(id) {
+			event.preventDefault()
+
+			name = $('#name').val()
+			phone = $('#phone').val()
+			password = $('#password').val()
+
+			// TODO: Validate thông tin ở đây
+			if ($.trim(name) == ''){
+                  alert('Bạn chưa nhập tên ');
+       			}
+       		if ($.trim(phone) == ''){
+                  alert('Bạn chưa nhập phone');
+       			}
+
+       		if ($.trim(password) == ''){
+                  alert('Bạn chưa nhập password');
+       			}
+       		else{
+			req = {
+
+				name: name,
+				phone: phone,
+				password: password
+			}
+			console.log(req)
+			var myJSON = JSON.stringify(req);
+			console.log(myJSON)
+			$.ajax({
+			   	url: 'http://localhost:8080/user/'+id,
+			   	type: 'PUT',
+			   	data: myJSON,
+			   	dataType: "json",
+			   	contentType: "application/json; charset=utf-8",
+			   	error: function(data) {
+			   		alert(data.responseJSON.message)
+			   	},
+			   	success: function(data) {
+			   		alert("Thành công")
+					window.location.assign('http://localhost:8080/admin');
+			   	}
+			});
+			}
+		}
+
+
+	</script>
+</body>
+</html>

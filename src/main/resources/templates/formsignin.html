@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+
+<body>
+<nav  class="navbar navbar-dark bg-dark"style="background-color: #e3f2fd">
+	<form class="form-inline" >
+		<a class="btn btn-outline-success text-light" type="hide" th:href="@{/admin}"  >ADMIN</a>
+		<a class="btn btn-sm btn-outline-success text-light" type="button"th:href="@{/listuser/add}">Đăng ký</a>
+	</form>
+
+</nav>
+
+	<div class="container" id="main-content">
+		<div class="row d-flex justify-content-center">
+			<form style="min-width: 300px;"
+				  novalidate="novalidate">
+				<h5 class="text-center">Đăng nhập</h5>
+
+<!--				<input type="hidden" th:field="*{id}" />-->
+
+
+
+				<div class="form-group">
+					<input class="form-control" id="email" type="email" placeholder="Your Email"
+						   name="email"  />
+
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" id="password" type="password" placeholder="Password"
+						   name="password" />
+
+				</div>
+
+				<div class="form-group">
+					<button type="submit" id="btn-add-new" class="btn btn-block btn-primary">
+						<i class="fa fa-save" ></i> Đăng nhập
+					</button>
+				</div>
+			</form>
+		</div>
+	</div><!-- /.container -->
+
+	<footer th:replace="layout :: footer"></footer>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			hello();
+        });
+        function hello() {
+			console.log("Hello World");
+		};
+		$('#btn-add-new').click(function() {
+			event.preventDefault()
+			email = $('#email').val()
+			password = $('#password').val()
+
+			// TODO: Validate thông tin ở đây
+
+       		  if ($.trim(email) == ''){
+                  alert('Bạn chưa nhập email');
+       			}
+       		else if ($.trim(password) == ''){
+                  alert('Bạn chưa nhập password');
+       			}
+<!--       		else if(!check()){-->
+
+<!--       		}-->
+			else{
+			req = {
+				email: email,
+				password: password
+			}
+			console.log(req)
+			var myJSON = JSON.stringify(req);
+			console.log(myJSON)
+			$.ajax({
+
+			   	url: 'http://localhost:8080/authenticate',
+			   	type: 'POST',
+			   	data: myJSON,
+			   	dataType: "json",
+			   	contentType: "application/json; charset=utf-8",
+			   	error: function(data) {
+			   			alert(data.message)
+			   		    alert("lỗi")
+			   	},
+			   	success: function(data) {
+			   		alert(data.message)
+
+<!--					window.location.assign('http://localhost:8080/admin');-->
+			   	}
+			});
+			}
+		})
+
+<!--	function check(){-->
+<!--        var email = document.getElementById('email');-->
+<!--         var filter1 = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;-->
+<!--          if (!filter1.test(email.value)) {-->
+<!--             email.focus;-->
+<!--             alert('Hãy nhập email hợp lệ.\nExample@gmail.com');-->
+<!--             return false;-->
+<!--      }-->
+
+
+<!--}-->
+
+	</script>
+
+</body>
+</html>

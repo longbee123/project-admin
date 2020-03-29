@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+
+<body>
+	<nav th:replace="layout :: header"></nav>
+
+	<div class="container" id="main-content">
+		<div class="row d-flex justify-content-center">
+			<form style="min-width: 300px;"
+				  novalidate="novalidate">
+				<h5 class="text-center">Brand Form</h5>
+
+<!--				<input type="hidden" th:field="*{id}" />-->
+
+				<div class="form-group">
+					<input class="form-control" id="name" type="text" placeholder="Brand's Name"
+						  name="name"/>
+
+				</div>
+				<div class="form-group" >
+					<form >
+						<label for="exampleInputFile" class="col-sm-2 control-label">Image</label>
+						<div class="col-sm-8">
+							<input type="file" id="exampleInputFile">
+						</div>
+					</form>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<img id="img123" style="max-width: 200px; height: auto"
+							 src="https://www.vietnamprintpack.com/images/default.jpg"
+							 class="product-main-image">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" id="btn-add-new" class="btn btn-block btn-primary">
+						<i class="fa fa-save" ></i> Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div><!-- /.container -->
+
+	<footer th:replace="layout :: footer"></footer>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			hello();
+        });
+        function hello() {
+			console.log("Hello World");
+		};
+		$('#btn-add-new').click(function() {
+			event.preventDefault()
+			name = $('#name').val()
+			thumbnail = $('#img123').attr('src');
+			// TODO: Validate thông tin ở đây
+		 if ($.trim(name) == ''){
+                  alert('Bạn chưa nhập tên ');
+       			}
+<!--		else if ($.trim(date) == ''){-->
+<!--                  alert('Bạn chưa nhập ngày tạo');-->
+<!--       			}-->
+
+			else{
+			req = {
+				name: name,
+				thumbnail : thumbnail
+			}
+			console.log(req)
+			var myJSON = JSON.stringify(req);
+			console.log(myJSON)
+			$.ajax({
+			   	url: 'http://localhost:8080/category/create',
+			   	type: 'POST',
+			   	data: myJSON,
+			   	dataType: "json",
+			   	contentType: "application/json; charset=utf-8",
+			   	error: function(data) {
+			   		alert(data.responseJSON.message)
+			   	},
+			   	success: function(data) {
+			   		alert("Tạo mới thành công")
+					window.location.assign('http://localhost:8080/brand');
+			   	}
+			});
+			}
+		});
+
+		 $("#exampleInputFile").change(function(){
+				 var file_data = $('#exampleInputFile').prop('files')[0];
+				var formData = new FormData();
+				 formData.append('fileData', file_data);
+				 $.ajax({
+  					  url: "http://localhost:8080/product/upload",
+   					 type: "POST",
+   					 data: formData,
+   					 processData: false,
+    				contentType: false,
+    				cache: false,
+    				success: function (res) {
+							console.log("success")
+							console.log(res)
+<!--						 var imgfilename = $('#exampleInputFile').val().replace(/C:\\fakepath\\/i, '');-->
+						 $('#img123').attr('src',res);
+
+   						 },
+   					 error: function () {
+							console.log("lỗi");
+				 }
+  });
+});
+
+
+
+	</script>
+
+</body>
+</html>
